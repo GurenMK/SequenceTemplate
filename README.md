@@ -1,1 +1,1 @@
-# SequnceTemplate
+# SequenceTemplate
