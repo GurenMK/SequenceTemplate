@@ -1,0 +1,99 @@
+//Alexander Urbanyak
+
+#include <cassert>
+using namespace stack_sequence_4;
+
+namespace stack_sequence_4 {
+
+    template <class Item>
+    sequence<Item>::sequence( ) { }
+
+    template <class T>
+    void sequence<T>::start( ) {
+        if (!first.empty()){
+        	while (first.size() > 1){
+        		second.push(first.top());
+        		first.pop();
+        	}
+        }
+        else {
+        	if (!second.empty()){
+        		first.push(second.top());
+        		second.pop();
+            }
+        }
+    }
+
+    template <class T>
+    void sequence<T>::advance( ) {
+        assert(is_item());
+        if (!second.empty()){
+        	first.push(second.top());
+        	second.pop();
+        }
+        else {
+        	while (!first.empty()){
+        		second.push(first.top());
+        		first.pop();
+        	}
+        }
+    }
+
+    template <class T>
+    void sequence<T>::insert(const T& entry) {
+        if(!first.empty()){
+        	second.push(first.top());
+        	first.pop();
+        	first.push(entry);
+        }
+        else {
+        	first.push(entry);
+        }
+    }
+
+    template <class T>
+    void sequence<T>::attach(const T& entry) {
+        if (is_item()) {
+            first.push(entry);
+        }
+        else {
+            while (!second.empty()){
+                first.push(second.top());
+                second.pop();
+            }
+            first.push(entry);
+        }
+    }
+
+    template <class T>
+    void sequence<T>::remove_current( ) {
+        assert(is_item());
+        first.pop();
+        if (!second.empty()){
+            first.push(second.top());
+            second.pop();
+        }
+        else {
+            while (!first.empty()){
+                second.push(first.top());
+                first.pop();
+            }
+        }
+    }
+
+    template <class T>
+    std::size_t sequence<T>::size( ) const{
+        return first.size() + second.size();
+    }
+
+    template <class T>
+    bool sequence<T>::is_item( ) const{
+        return (!first.empty());
+    }
+
+    template <class T>
+    T sequence<T>::current( ) const{
+        assert(is_item());
+        return first.top();
+    }
+}
